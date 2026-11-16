@@ -2,8 +2,11 @@
 
 from html.parser import HTMLParser
 from pathlib import Path
+import ssl
 from urllib.parse import urlsplit
 from urllib.request import urlopen
+
+import certifi
 
 _BLOCK_TAGS = {
     "address", "article", "aside", "blockquote", "br", "dd", "div", "dl",
@@ -65,7 +68,8 @@ def read_url_text(url: str) -> str:
     if address.scheme not in {"http", "https"} or not address.hostname:
         raise ValueError("Введите полный URL с http:// или https://.")
 
-    with urlopen(url, timeout=10) as response:
+    tls_context = ssl.create_default_context(cafile=certifi.where())
+    with urlopen(url, timeout=10, context=tls_context) as response:
         content_type = response.headers.get_content_type()
         is_html = content_type in {"text/html", "application/xhtml+xml"}
         if not is_html and not content_type.startswith("text/"):
