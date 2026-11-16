@@ -12,14 +12,9 @@ MENU = """
 1. Проверить двоичную запись числа
 2. Найти числа во введённом тексте
 3. Найти числа в файле
-4. Найти числа на странице с примерами
+4. Найти числа на веб-странице
 0. Выйти
 """
-
-EXAMPLE_PAGE_URL = (
-    "https://ursinus-cs373-f2021.github.io/CoursePage/"
-    "ClassExercises/Week2_Formal/"
-)
 
 
 # Выводит найденные записи по одной на строку или сообщает об их отсутствии.
@@ -53,8 +48,8 @@ def main() -> None:
                     path = input("Введите путь к файлу: ").strip()
                     print_matches(read_text_file(Path(path).expanduser()))
                 elif choice == "4":
-                    print(f"Загружаю страницу: {EXAMPLE_PAGE_URL}")
-                    print_matches(read_url_text(EXAMPLE_PAGE_URL))
+                    url = input("Введите URL страницы: ").strip()
+                    print_matches(read_url_text(url))
                 else:
                     print("Выберите пункт от 0 до 4.")
             except (OSError, ValueError, LookupError, RuntimeError, HTTPException) as error:
